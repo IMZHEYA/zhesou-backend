@@ -3,12 +3,18 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.yupi.springbootinit.model.entity.Picture;
 import com.yupi.springbootinit.model.entity.Post;
 import com.yupi.springbootinit.service.PostService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +24,7 @@ public class CrawlerTest {
 
     @Resource
     private PostService postService;
+    //抓取文章
     @Test
     void testFetchPassage() {
         //1.获取数据
@@ -47,6 +54,29 @@ public class CrawlerTest {
             postList.add(post);
             //3.写入数据库
             postService.saveBatch(postList);
+        }
+    }
+    //抓取图片
+    @Test
+    void testFetchPicture() throws IOException {
+        int current = 1;
+        String url = "https://cn.bing.com/images/search?q=%E5%B0%8F%E9%BB%91%E5%AD%90&form=HDRSC2&first=" + current;
+        Document doc = Jsoup.connect(url).get();
+        Elements elements = doc.select(".iuscp.isv"); //数组，每个元素是每一张图片
+        List<Picture> pictures = new ArrayList<>();
+        for (Element element : elements) {
+            //取图片地址murl
+            String m = element.select(".iusc").attr("m");
+            Map<String,Object> map = JSONUtil.toBean(m, Map.class);
+            String murl  = (String) map.get("murl");
+            //取标题
+            String title = element.select(".inflnk").attr("aria-label");
+//            System.out.println(murl);
+//            System.out.println(title);
+            Picture picture = new Picture();
+            picture.setTitle(title);
+            picture.setUrl(murl);
+            pictures.add(picture);
         }
     }
 }
