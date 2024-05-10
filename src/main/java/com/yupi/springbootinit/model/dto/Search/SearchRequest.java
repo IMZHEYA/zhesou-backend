@@ -1,5 +1,6 @@
 package com.yupi.springbootinit.model.dto.Search;
 
+import com.yupi.springbootinit.common.PageRequest;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * @from
  */
 @Data
-public class SearchRequest implements Serializable {
+public class SearchRequest extends  PageRequest implements Serializable {
 
 
     private String searchText;

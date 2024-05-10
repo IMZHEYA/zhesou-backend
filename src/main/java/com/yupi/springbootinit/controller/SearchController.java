@@ -40,15 +40,6 @@ import java.util.concurrent.CompletableFuture;
 @CrossOrigin(originPatterns = {"http://localhost:8081"}, allowCredentials = "true", allowedHeaders = {"*"})
 public class SearchController {
 
-    @Resource
-    private PictureService pictureService;
-
-
-    @Resource
-    private PostService postService;
-
-    @Resource
-    private UserService userService;
 
     @Resource
     private SearchFacade searchFacade;
