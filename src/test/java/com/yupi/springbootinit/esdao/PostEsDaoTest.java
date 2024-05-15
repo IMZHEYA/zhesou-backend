@@ -43,16 +43,18 @@ public class PostEsDaoTest {
         System.out.println(postEsDao.count());
         Page<PostEsDTO> PostPage = postEsDao.findAll(
                 PageRequest.of(0, 5, Sort.by("createTime")));
-        List<PostEsDTO> postList = PostPage.getContent();
+        List<PostEsDTO> postList = PostPage.getContent(); //分页查询
         System.out.println(postList);
+        Optional<PostEsDTO> byId = postEsDao.findById(1L); //根据id查询
+        System.out.println(byId);
     }
 
     @Test
     void testAdd() {
         PostEsDTO postEsDTO = new PostEsDTO();
         postEsDTO.setId(1L);
-        postEsDTO.setTitle("test");
-        postEsDTO.setContent("test");
+        postEsDTO.setTitle("测试添加数据标题");
+        postEsDTO.setContent("测试添加数据内容");
         postEsDTO.setTags(Arrays.asList("java", "python"));
         postEsDTO.setThumbNum(1);
         postEsDTO.setFavourNum(1);
@@ -79,5 +81,10 @@ public class PostEsDaoTest {
     void testFindByCategory() {
         List<PostEsDTO> postEsDaoTestList = postEsDao.findByUserId(1L);
         System.out.println(postEsDaoTestList);
+    }
+    @Test
+    void testFindByTitle() {
+        List<PostEsDTO> postEsDTOS = postEsDao.findByTitle("测试添加数据标题");
+        System.out.println(postEsDTOS);
     }
 }
