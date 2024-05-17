@@ -64,8 +64,8 @@ public class PostDataSource extends ServiceImpl<PostMapper, Post> implements Dat
         postQueryRequest.setCurrent(pageNum);
         postQueryRequest.setPageSize(pageSize);
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        Page<PostVO> postVOPage = postService.listPostVOByPage(postQueryRequest, request);
-        return postVOPage;
+        Page<Post> postPage = postService.searchFromEs(postQueryRequest);
+        return postService.getPostVOPage(postPage,request);
     }
 }
 
